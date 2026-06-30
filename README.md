@@ -92,7 +92,57 @@ npm run diagnose:lan
 
 ---
 
-## 🌐 Publicar el backend online
+## ⚡ Vue 3 + Vercel (frontend) + Render (backend)
+
+Arquitectura separada recomendada para producción:
+
+```
+┌─────────────────────┐         ┌──────────────────────────┐
+│  Vue 3 en Vercel    │  wss    │  Node.js en Render/      │
+│  client/            │ ──────► │  Railway (server/)       │
+└─────────────────────┘         └──────────────────────────┘
+```
+
+### Desarrollo local (ambos a la vez)
+
+```bash
+# Terminal 1 — backend
+npm start
+
+# Terminal 2 — frontend Vue (proxy a :3000)
+npm run dev:client
+```
+
+Abre **http://localhost:5173**
+
+### Deploy backend → Render
+
+1. [render.com](https://render.com) → **Web Service** → repo GitHub
+2. **Root Directory:** *(raíz del repo)*
+3. **Start Command:** `node server/index.js`
+4. Variables de entorno:
+   ```
+   ALLOWED_ORIGINS=https://tu-app.vercel.app,http://localhost:5173
+   ```
+5. Copia la URL: `https://rpsls-xxxx.onrender.com`
+
+### Deploy frontend → Vercel
+
+1. [vercel.com](https://vercel.com) → **Import Project** → mismo repo
+2. **Root Directory:** `client`
+3. **Framework:** Vite
+4. Variables de entorno:
+   ```
+   VITE_API_URL=https://rpsls-xxxx.onrender.com
+   VITE_WS_URL=wss://rpsls-xxxx.onrender.com/ws
+   ```
+5. Deploy → URL tipo `https://rpsls.vercel.app`
+
+> En Vercel el frontend es reactivo (Vue 3). El chat y multijugador viven en el backend.
+
+---
+
+## 🌐 Publicar el backend online (todo en uno)
 
 Tu app necesita un servidor **Node.js con WebSocket**. Estas plataformas funcionan bien:
 
