@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 200" role="img" aria-label="RPSLS banner">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1030"/>
+      <stop offset="100%" stop-color="#08080e"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="200" rx="20" fill="url(#bg)"/>
+  <text x="450" y="78" text-anchor="middle" fill="#f4f4f5" font-family="Inter,Segoe UI,sans-serif" font-size="42" font-weight="800">RPSLS</text>
+  <text x="450" y="118" text-anchor="middle" fill="#a78bfa" font-family="Inter,Segoe UI,sans-serif" font-size="18" font-weight="500">Rock · Paper · Scissors · Lizard · Spock</text>
+  <text x="450" y="155" text-anchor="middle" fill="#a1a1aa" font-family="Inter,Segoe UI,sans-serif" font-size="14">PWA · Multijugador · Chat en tiempo real</text>
+  <text x="120" y="155" font-size="36">🪨</text>
+  <text x="220" y="155" font-size="36">📄</text>
+  <text x="320" y="155" font-size="36">✂️</text>
+  <text x="580" y="155" font-size="36">🦎</text>
+  <text x="680" y="155" font-size="36">🖖</text>
+</svg>
