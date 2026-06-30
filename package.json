@@ -1,0 +1,17 @@
+{
+  "name": "rock-paper-scissors-lizard-spock",
+  "version": "2.0.0",
+  "description": "RPSLS con interfaz web, multijugador y chat integrado (Chat-node)",
+  "main": "server/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "cli": "python game.py"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": ["game", "rpsls", "websocket", "chat", "multiplayer"],
+  "license": "MIT"
+}
