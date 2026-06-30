@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 620" role="img" aria-label="Diagrama RPSLS: quién gana a quién">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#a78bfa"/>
+    </marker>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="640" height="620" rx="24" fill="#111118"/>
+  <text x="320" y="42" text-anchor="middle" fill="#f4f4f5" font-family="Inter,Segoe UI,sans-serif" font-size="22" font-weight="700">¿Quién gana a quién?</text>
+  <text x="320" y="68" text-anchor="middle" fill="#a1a1aa" font-family="Inter,Segoe UI,sans-serif" font-size="13">Sigue la flecha: el de arriba vence al de abajo</text>
+
+  <!-- Pentagon layout: rock top, paper top-right, scissors bottom-right, lizard bottom-left, spock top-left -->
+  <g font-family="Inter,Segoe UI,sans-serif" text-anchor="middle">
+    <g transform="translate(320,130)">
+      <circle r="52" fill="#1e1e28" stroke="#8b5cf6" stroke-width="2"/>
+      <text y="-6" fill="#f4f4f5" font-size="28">🪨</text>
+      <text y="22" fill="#e4e4e7" font-size="13" font-weight="600">Piedra</text>
+    </g>
+    <g transform="translate(500,220)">
+      <circle r="52" fill="#1e1e28" stroke="#8b5cf6" stroke-width="2"/>
+      <text y="-6" fill="#f4f4f5" font-size="28">📄</text>
+      <text y="22" fill="#e4e4e7" font-size="13" font-weight="600">Papel</text>
+    </g>
+    <g transform="translate(440,400)">
+      <circle r="52" fill="#1e1e28" stroke="#8b5cf6" stroke-width="2"/>
+      <text y="-6" fill="#f4f4f5" font-size="28">✂️</text>
+      <text y="22" fill="#e4e4e7" font-size="13" font-weight="600">Tijeras</text>
+    </g>
+    <g transform="translate(200,400)">
+      <circle r="52" fill="#1e1e28" stroke="#8b5cf6" stroke-width="2"/>
+      <text y="-6" fill="#f4f4f5" font-size="28">🦎</text>
+      <text y="22" fill="#e4e4e7" font-size="13" font-weight="600">Lagarto</text>
+    </g>
+    <g transform="translate(140,220)">
+      <circle r="52" fill="#1e1e28" stroke="#8b5cf6" stroke-width="2"/>
+      <text y="-6" fill="#f4f4f5" font-size="28">🖖</text>
+      <text y="22" fill="#e4e4e7" font-size="13" font-weight="600">Spock</text>
+    </g>
+  </g>
+
+  <!-- Win arrows (purple) -->
+  <g stroke="#a78bfa" stroke-width="2.5" fill="none" marker-end="url(#arrow)" opacity="0.9">
+    <path d="M300,175 L215,245"/>  <!-- rock -> scissors area via spock? rock beats scissors -->
+    <path d="M340,175 L230,360"/>  <!-- rock -> lizard -->
+    <path d="M455,220 L350,155"/>  <!-- paper -> rock -->
+    <path d="M470,255 L160,245"/>  <!-- paper -> spock -->
+    <path d="M420,385 L480,270"/>  <!-- scissors -> paper -->
+    <path d="M380,400 L250,400"/>  <!-- scissors -> lizard -->
+    <path d="M230,385 L130,270"/>  <!-- lizard -> spock -->
+    <path d="M250,360 L460,360"/>  <!-- lizard -> paper -->
+    <path d="M175,270 L290,165"/>  <!-- spock -> scissors -->
+    <path d="M195,245 L305,155"/>  <!-- spock -> rock -->
+  </g>
+
+  <!-- Legend cards -->
+  <g font-family="Inter,Segoe UI,sans-serif" font-size="12">
+    <rect x="40" y="490" width="260" height="105" rx="12" fill="#18181f" stroke="#ffffff14"/>
+    <text x="56" y="514" fill="#a78bfa" font-weight="700">🪨 Piedra vence</text>
+    <text x="56" y="536" fill="#d4d4d8">Tijeras y Lagarto</text>
+    <text x="56" y="562" fill="#a78bfa" font-weight="700">📄 Papel vence</text>
+    <text x="56" y="584" fill="#d4d4d8">Piedra y Spock</text>
+
+    <rect x="340" y="490" width="260" height="105" rx="12" fill="#18181f" stroke="#ffffff14"/>
+    <text x="356" y="514" fill="#a78bfa" font-weight="700">✂️ Tijeras vence</text>
+    <text x="356" y="536" fill="#d4d4d8">Papel y Lagarto</text>
+    <text x="356" y="562" fill="#a78bfa" font-weight="700">🦎 Lagarto vence</text>
+    <text x="356" y="584" fill="#d4d4d8">Spock y Papel</text>
+
+    <text x="320" y="468" text-anchor="middle" fill="#a78bfa" font-weight="700" font-size="13">🖖 Spock vence Tijeras y Piedra</text>
+  </g>
+</svg>
