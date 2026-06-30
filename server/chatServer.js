@@ -1,4 +1,5 @@
 import { MessageType, createMessage } from './protocol.js';
+import { logger } from './logger.js';
 
 const MAX_HISTORY = 100;
 
@@ -24,6 +25,9 @@ export class ChatServer {
 
   handleConnection(ws) {
     ws.isAlive = true;
+    ws._connectAt = Date.now();
+    logger.info('WS', 'Nueva conexión');
+
     ws.on('pong', () => { ws.isAlive = true; });
 
     ws.on('message', (raw) => {
@@ -31,8 +35,14 @@ export class ChatServer {
       this.#handleRawMessage(ws, msg);
     });
 
-    ws.on('close', () => this.#handleDisconnect(ws));
-    ws.on('error', () => this.#handleDisconnect(ws));
+    ws.on('close', () => {
+      logger.info('WS', 'Conexión cerrada', { user: ws.username || '(sin join)' });
+      this.#handleDisconnect(ws);
+    });
+    ws.on('error', (err) => {
+      logger.error('WS', 'Error en socket', { user: ws.username, error: err?.message });
+      this.#handleDisconnect(ws);
+    });
   }
 
   #handleRawMessage(ws, raw) {
@@ -40,9 +50,12 @@ export class ChatServer {
     try {
       data = JSON.parse(raw);
     } catch {
+      logger.warn('MSG', 'JSON inválido');
       this.#send(ws, MessageType.ERROR, { message: 'JSON inválido' });
       return;
     }
+
+    logger.debug('MSG', 'Recibido', { type: data.type, user: ws.username });
 
     if (data.type === MessageType.JOIN) {
       this.#handleJoin(ws, data.payload);
@@ -68,18 +81,30 @@ export class ChatServer {
     const username = String(payload?.username ?? '').trim();
 
     if (!username || username.length > 24) {
+      logger.warn('JOIN', 'Nombre inválido', { username });
       this.#send(ws, MessageType.ERROR, { message: 'Nombre inválido (1-24 caracteres)' });
       return;
     }
 
-    if (this.onlineUsers.includes(username)) {
-      this.#send(ws, MessageType.ERROR, { message: 'Ese nombre ya está en uso' });
-      return;
+    const existing = [...this.clients.entries()].find(([, c]) => c.username === username);
+    if (existing) {
+      const [existingWs] = existing;
+      if (existingWs.readyState === 1 && existingWs.isAlive !== false) {
+        logger.warn('JOIN', 'Nombre en uso', { username });
+        this.#send(ws, MessageType.ERROR, { message: 'Ese nombre ya está en uso. Prueba otro.' });
+        return;
+      }
+      logger.info('JOIN', 'Reemplazando conexión muerta', { username });
+      this.clients.delete(existingWs);
+      try { existingWs.terminate?.(); } catch { /* ignore */ }
     }
 
     ws.username = username;
+    ws.isAlive = true;
     this.clients.set(ws, { username, joinedAt: Date.now() });
+    logger.info('JOIN', 'Usuario entró a la sala', { username, online: this.onlineUsers.length });
 
+    this.#send(ws, MessageType.JOINED, { username });
     this.#send(ws, MessageType.HISTORY, { messages: this.history });
     this.#send(ws, MessageType.USERS, { users: this.onlineUsers });
     this.broadcast(MessageType.USER_JOINED, { username }, ws);

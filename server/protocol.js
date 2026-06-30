@@ -2,6 +2,7 @@
 
 export const MessageType = {
   JOIN: 'join',
+  JOINED: 'joined',
   MESSAGE: 'message',
   USER_JOINED: 'user_joined',
   USER_LEFT: 'user_left',
