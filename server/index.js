@@ -58,15 +58,24 @@ function getShareUrls(ips) {
   };
 }
 
-function serveApiInfo(_req, res) {
+function getPublicUrl(req) {
+  if (process.env.PUBLIC_URL) return process.env.PUBLIC_URL.replace(/\/$/, '');
+  const host = req.headers['x-forwarded-host'] || req.headers.host;
+  const proto = req.headers['x-forwarded-proto'] || 'http';
+  if (host && !host.startsWith('localhost')) return `${proto}://${host}`;
+  return null;
+}
+
+function serveApiInfo(req, res) {
   const ips = getNetworkIPs();
   const { networkUrls, recommendedUrl } = getShareUrls(ips);
+  const publicUrl = getPublicUrl(req);
   res.writeHead(200, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify({
     port: PORT,
-    localUrl: `http://localhost:${PORT}`,
-    networkUrls,
-    recommendedUrl,
+    localUrl: publicUrl || `http://localhost:${PORT}`,
+    networkUrls: publicUrl ? [publicUrl] : networkUrls,
+    recommendedUrl: publicUrl || recommendedUrl,
   }));
 }
 

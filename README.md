@@ -92,6 +92,52 @@ npm run diagnose:lan
 
 ---
 
+## 🌐 Publicar el backend online
+
+Tu app necesita un servidor **Node.js con WebSocket**. Estas plataformas funcionan bien:
+
+| Plataforma | Gratis | WebSocket | Dificultad |
+|------------|--------|-----------|------------|
+| **[Render](https://render.com)** | Sí (con límites) | ✅ | ⭐ Fácil |
+| **[Railway](https://railway.app)** | Créditos gratis | ✅ | ⭐ Fácil |
+| **[Fly.io](https://fly.io)** | Sí (con límites) | ✅ | ⭐⭐ Media |
+| **VPS** (DigitalOcean, etc.) | No | ✅ | ⭐⭐⭐ |
+
+### Opción A — Render (recomendada)
+
+1. Crea cuenta en [render.com](https://render.com)
+2. **New → Web Service** → conecta tu repo de GitHub
+3. Configuración:
+   - **Build Command:** *(dejar vacío)*
+   - **Start Command:** `node server/index.js`
+   - **Instance type:** Free
+4. Deploy → te dará una URL como `https://rpsls-xxxx.onrender.com`
+5. Comparte esa URL — funciona desde cualquier lugar del mundo
+
+O usa el blueprint del repo: **New → Blueprint** (lee `render.yaml` automáticamente).
+
+### Opción B — Railway
+
+1. [railway.app](https://railway.app) → **New Project → Deploy from GitHub**
+2. Selecciona `Rock_Paper_Scissors_Lizard_Spock`
+3. Railway detecta `npm start` y despliega solo
+4. **Settings → Networking → Generate Domain**
+
+### Opción C — Docker (cualquier VPS)
+
+```bash
+docker build -t rpsls .
+docker run -p 3000:3000 -e PORT=3000 rpsls
+```
+
+### No sirven para el backend
+
+GitHub Pages, Netlify estático o hosting solo PHP — **no ejecutan Node ni WebSocket**.
+
+> **Nota:** En plan gratis (Render/Railway) el servidor puede dormir tras inactividad. La primera visita tarda ~30 s en despertar.
+
+---
+
 ## 📲 Instalar como app (PWA)
 
 1. Abre el juego en **Chrome** o **Edge**

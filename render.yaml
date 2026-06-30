@@ -1,0 +1,13 @@
+# Despliegue en Render — https://render.com
+# Dashboard → New → Blueprint → conecta este repo
+services:
+  - type: web
+    name: rpsls
+    runtime: node
+    plan: free
+    buildCommand: echo "No build needed"
+    startCommand: node server/index.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 20
