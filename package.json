@@ -7,6 +7,8 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
+    "dev:client": "npm run dev --prefix client",
+    "build:client": "npm run build --prefix client",
     "cli": "python game.py",
     "diagnose": "node scripts/diagnose.js",
     "diagnose:lan": "node scripts/diagnose.js 13.13.58.37 3000"
