@@ -141,13 +141,20 @@ export class WebSocket extends EventEmitter {
 }
 
 export class WebSocketServer extends EventEmitter {
-  constructor({ server, path = '/ws' }) {
+  constructor({ server, path = '/ws', onOriginCheck = () => true }) {
     super();
     this.path = path;
     this.clients = new Set();
+    this.onOriginCheck = onOriginCheck;
 
     server.on('upgrade', (req, socket, head) => {
       if (req.url?.split('?')[0] !== this.path) {
+        socket.destroy();
+        return;
+      }
+
+      if (!this.onOriginCheck(req.headers.origin)) {
+        socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
         socket.destroy();
         return;
       }

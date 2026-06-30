@@ -7,6 +7,7 @@ import { WebSocketServer } from './websocket.js';
 import { ChatServer } from './chatServer.js';
 import { GameServer } from './gameServer.js';
 import { logger } from './logger.js';
+import { corsHeaders, isOriginAllowed } from './cors.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
@@ -79,7 +80,20 @@ function serveApiInfo(req, res) {
   }));
 }
 
+function setCors(req, res) {
+  const headers = corsHeaders(req);
+  for (const [k, v] of Object.entries(headers)) res.setHeader(k, v);
+}
+
 function serveStatic(req, res) {
+  setCors(req, res);
+
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204);
+    res.end();
+    return;
+  }
+
   const urlPath = req.url === '/' ? '/index.html' : req.url.split('?')[0];
 
   if (urlPath === '/api/info') {
@@ -140,7 +154,11 @@ const game = new GameServer(chat);
 chat.gameServer = game;
 
 const server = http.createServer(serveStatic);
-const wss = new WebSocketServer({ server, path: '/ws' });
+const wss = new WebSocketServer({
+  server,
+  path: '/ws',
+  onOriginCheck: (origin) => isOriginAllowed(origin),
+});
 
 wss.on('connection', (ws) => chat.handleConnection(ws));
 
